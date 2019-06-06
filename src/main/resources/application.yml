@@ -1,0 +1,31 @@
+spring:
+  datasource: 
+    url: jdbc:postgresql://localhost:5432/helloapp
+    username: helloapp
+    password: helloapp    hikari:      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      pool-name: GraphQL_POOL
+      max-lifetime: 200000
+      connection-timeout: 20000
+  jpa:
+    hibernate:      ddl-auto: update
+    open-in-view: false
+    database: POSTGRESQL
+    properties:      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql: true
+        id:
+          new_generator_mappings: true
+        search:
+          autoregister_listeners: false
+        bytecode:
+          use_reflection_optimizer: false
+logging:
+  level:    org.hibernate.SQL: DEBUG       
+    org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: ERROR
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      
+    
