@@ -10,7 +10,6 @@ import java.net.URL;
 
 import javax.annotation.PostConstruct;
 
-import org.simon.pascal.data.GraphQLDataFetchers;
 import org.simon.pascal.service.AuteurService;
 import org.simon.pascal.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,6 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 public class GraphQLProvider {
 	private GraphQL graphQL;
 	@Autowired
-	private GraphQLDataFetchers graphQLDataFetchers;
-	@Autowired
 	private AuteurService auteurService;
 	@Autowired
 	private BookService bookService;
@@ -53,8 +50,11 @@ public class GraphQLProvider {
 		graphQL = GraphQL.newGraphQL(graphQLSchema).build();
 	}
 
+
+
 	private GraphQLSchema buildSchema(String sdl) {
 		final TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
+
         final RuntimeWiring runtimeWiring = buildWiring();
         final SchemaGenerator schemaGenerator = new SchemaGenerator();
         return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
@@ -64,9 +64,13 @@ public class GraphQLProvider {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
                         .dataFetcher("bookById", bookService.getBookByIdDataFetcher())
-                        .dataFetcher("authorById", auteurService.getAuthorByIdDataFetcher()))
+                        .dataFetcher("authorById", auteurService.getAuthorByIdDataFetcher())
+                        .dataFetcher("allAuthor", auteurService.getAll()))
+
                 .type(newTypeWiring("Book")
                         .dataFetcher("author", bookService.getAuthorDataFetcher()))
+                .type(newTypeWiring("Mutation")
+                		.dataFetcher("createAuteur", auteurService.createAuteur()))
                 .build();
     }
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.simon.pascal.entities.AuteurEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * The Interface AuteurRepository.
@@ -22,4 +23,8 @@ public interface AuteurRepository extends JpaRepository<AuteurEntity, Integer>{
 	 * @return the auteur entity
 	 */
 	Optional<AuteurEntity> findByCode(String code);
+
+	@Query("SELECT MAX(entity.code) FROM  AuteurEntity entity ")
+	String findLastCode();
+
 }

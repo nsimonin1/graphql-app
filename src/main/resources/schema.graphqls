@@ -1,8 +1,16 @@
+schema {
+	query: Query
+	mutation: Mutation
+}
 type Query {
   bookById(code: ID): Book 
-  authorById(code: ID): Author
+  authorById(code: ID): Author  
+  allAuthor(page: Int!, size: Int!): [Author!]!
 }
 
+type Mutation {
+	createAuteur(firstName: String!, lastName: String!): Author
+}
 type Book {
   code: ID
   name: String

@@ -20,7 +20,7 @@ import lombok.Data;
 @Data
 public class AuteurEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "auteur_id_seq")
 	private Integer id;
 	private String code;
 	private String firstName;
