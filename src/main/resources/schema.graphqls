@@ -6,11 +6,19 @@ type Query {
   bookById(code: ID): Book 
   authorById(code: ID): Author  
   allAuthor(page: Int!, size: Int!): [Author!]!
+  allBooks: [Book!]!
 }
 
 type Mutation {
 	createAuteur(firstName: String!, lastName: String!): Author
+	createBook(data: NewBook!): Book
 }
+input NewBook {
+	 name: String!
+  	 pageCount: Int
+  	 authorCode: String!
+}
+
 type Book {
   code: ID
   name: String

@@ -65,11 +65,14 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Query")
                         .dataFetcher("bookById", bookService.getBookByIdDataFetcher())
                         .dataFetcher("authorById", auteurService.getAuthorByIdDataFetcher())
-                        .dataFetcher("allAuthor", auteurService.getAll()))
+                        .dataFetcher("allAuthor", auteurService.getAll())
+                        .dataFetcher("allBooks", bookService.getAll())
+                        )
 
                 .type(newTypeWiring("Book")
                         .dataFetcher("author", bookService.getAuthorDataFetcher()))
                 .type(newTypeWiring("Mutation")
+                		.dataFetcher("createBook", bookService.createBook())
                 		.dataFetcher("createAuteur", auteurService.createAuteur()))
                 .build();
     }

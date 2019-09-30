@@ -4,12 +4,16 @@
 package org.simon.pascal.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.simon.pascal.dto.BookInput;
 import org.simon.pascal.entities.AuteurEntity;
 import org.simon.pascal.entities.BookEntity;
 import org.simon.pascal.repositories.BookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import graphql.schema.DataFetcher;
 
@@ -24,6 +28,7 @@ public class BookService {
 
 	/** The book repository. */
 	public final BookRepository bookRepository;
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	/**
 	 * Instantiates a new book service.
@@ -59,6 +64,21 @@ public class BookService {
 		return dataFetchingEnvironment->{
 			final BookEntity data=dataFetchingEnvironment.getSource();
 			return data.getAuthor();
+		};
+	}
+
+	public DataFetcher<List<BookEntity>> getAll() {
+		return dataFetchingEnvironment->{
+			return bookRepository.findAll();
+		};
+	}
+
+	public DataFetcher<BookEntity> createBook() {
+		return dataFetchingEnvironment->{
+			final Map<String, Object> args=dataFetchingEnvironment.getArguments();
+			final String json=mapper.writeValueAsString(args.get("data"));
+			final BookInput input=mapper.readValue(json, BookInput.class);
+			return new BookEntity();
 		};
 	}
 
